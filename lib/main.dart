@@ -16,6 +16,10 @@ class TransferenciaAPP extends StatelessWidget {
 }
 
 class FormularioTrnansferencia extends StatelessWidget {
+  final TextEditingController _controladorCampoNumeroConta =
+      TextEditingController();
+  final TextEditingController _controladorCampoValor = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,9 +28,10 @@ class FormularioTrnansferencia extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorCampoNumeroConta,
               style: TextStyle(
                 fontSize: 24.0,
               ),
@@ -35,9 +40,10 @@ class FormularioTrnansferencia extends StatelessWidget {
               keyboardType: TextInputType.number,
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(16.0),
             child: TextField(
+              controller: _controladorCampoValor,
               style: TextStyle(
                 fontSize: 24.0,
               ),
@@ -49,7 +55,18 @@ class FormularioTrnansferencia extends StatelessWidget {
             ),
           ),
           ElevatedButton(
-            onPressed: () => {},
+            onPressed: () {
+              debugPrint('Clicou no confirmar');
+              final int? numeroConta =
+                  int.tryParse(_controladorCampoNumeroConta.text);
+              final double? valor =
+                  double.tryParse(_controladorCampoValor.text);
+
+              if (numeroConta != null && valor != null) {
+                final TransferenciaCriada = Transferencia(valor, numeroConta);
+                debugPrint('$TransferenciaCriada');
+              }
+            },
             child: Text('Confirmar'),
           ),
         ],
