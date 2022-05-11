@@ -9,7 +9,7 @@ class TransferenciaAPP extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        body: FormularioTrnansferencia(),
+        body: ListaTransferencias(),
       ),
     );
   }
@@ -39,7 +39,7 @@ class FormularioTrnansferencia extends StatelessWidget {
               icone: Icons.monetization_on),
           ElevatedButton(
             onPressed: () {
-              _criarTransferencia();
+              _criarTransferencia(context);
             },
             child: Text('Confirmar'),
           ),
@@ -48,14 +48,16 @@ class FormularioTrnansferencia extends StatelessWidget {
     );
   }
 
-  void _criarTransferencia() {
+  void _criarTransferencia(BuildContext context) {
     debugPrint('Clicou no confirmar');
     final int? numeroConta = int.tryParse(_controladorCampoNumeroConta.text);
     final double? valor = double.tryParse(_controladorCampoValor.text);
 
     if (numeroConta != null && valor != null) {
-      final TransferenciaCriada = Transferencia(valor, numeroConta);
-      debugPrint('$TransferenciaCriada');
+      final transferenciaCriada = Transferencia(valor, numeroConta);
+      debugPrint('transferenciaCriada');
+      debugPrint('$transferenciaCriada');
+      Navigator.pop(context, transferenciaCriada);
     }
   }
 }
@@ -107,6 +109,15 @@ class ListaTransferencias extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           print('Pressionou o botão');
+          final Future future = Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => FormularioTrnansferencia(),
+              ));
+          future.then((value) {
+            debugPrint('future');
+            debugPrint('$value');
+          });
         },
         child: const Icon(Icons.add),
       ),
